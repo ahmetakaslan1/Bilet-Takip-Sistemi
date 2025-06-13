@@ -127,6 +127,9 @@ Geliştirilen "Etkinlik Bilet Sistemi", mevcut sistemlerin eksikliklerine şu ç
 
 ```mermaid
 graph TD
+    Kullanici(Kullanıcı)
+    Yonetici(Yönetici)
+
     subgraph Etkinlik Bilet Sistemi
         UKayit["Kullanıcı Kaydı"]
         UGiris["Kullanıcı Girişi"]
@@ -138,23 +141,20 @@ graph TD
         Destek["Destek Talebi Yönetimi"]
     end
 
-    Kullanici --|> UGiris
-    Kullanici --|> UKayit
-    Kullanici --|> EListele
-    Kullanici --|> ESatinAl
-    Kullanici --|> Biletlerim
-    Kullanici --|> Destek
+    Kullanici --o UGiris
+    Kullanici --o UKayit
+    Kullanici --o EListele
+    Kullanici --o ESatinAl
+    Kullanici --o Biletlerim
+    Kullanici --o Destek
 
-    Yonetici --|> Yonetim
-    Yonetici --|> BiletDogrula
-    Yonetici --|> Destek
+    Yonetici --o Yonetim
+    Yonetici --o BiletDogrula
+    Yonetici --o Destek
 
-    actor Kullanici
-    actor Yonetici
-
-    EListele -- "extend" --> ULoginNeeded["(Giriş Gerekli)"]
-    ESatinAl -- "extend" --> ULoginNeeded
-    Biletlerim -- "extend" --> ULoginNeeded
+    EListele ..> ULoginNeeded["(Giriş Gerekli)"]
+    ESatinAl ..> ULoginNeeded
+    Biletlerim ..> ULoginNeeded
 ```
 
 #### 3.5.2. Use Case Senaryoları
@@ -415,7 +415,7 @@ graph TD
     end
     
     subgraph "Sunucu Tarafı"
-        WebServer[Web Sunucusu (Apache/Nginx)]
+        WebServer["Web Sunucusu (Apache)"]
         PHP_Engine[PHP Motoru]
         MySQL_DB[(MySQL Veritabanı)]
         
@@ -424,7 +424,7 @@ graph TD
         
         subgraph "PHP Bileşenleri"
             CoreFiles["Çekirdek Dosyalar (config, functions)"]
-            Pages["Sayfa Scriptleri (index, event, ...)"]
+            Pages["Sayfa Scriptleri (index, event)"]
             Admin["Admin Modülü"]
             QRCodeLib["QR Kod Kütüphanesi"]
         end
@@ -481,14 +481,10 @@ Zengin resim, sistemin paydaşlarını ve aralarındaki karmaşık ilişkileri b
 #### Context Diagram (Bağlam Diyagramı - DFD Seviye 0)
 ```mermaid
 graph TD
-    subgraph "Dış Varlıklar"
-        K[Kullanıcı]
-        Y[Yönetici]
-    end
+    K[Kullanıcı]
+    Y[Yönetici]
     
-    subgraph "Sistem"
-        S(Etkinlik Bilet Sistemi)
-    end
+    S(Etkinlik Bilet Sistemi)
     
     K -- "Kayıt Bilgileri, Giriş, Konum, Bilet Talebi" --> S
     S -- "Etkinlik Listesi, Bilet, QR Kod, Onay Mesajları" --> K
