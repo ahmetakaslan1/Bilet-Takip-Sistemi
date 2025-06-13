@@ -129,6 +129,7 @@ Geliştirilen "Etkinlik Bilet Sistemi", mevcut sistemlerin eksikliklerine şu ç
 graph TD
     Kullanici(Kullanıcı)
     Yonetici(Yönetici)
+    ULoginNeeded("Giriş Gerekli")
 
     subgraph Etkinlik Bilet Sistemi
         UKayit["Kullanıcı Kaydı"]
@@ -141,20 +142,20 @@ graph TD
         Destek["Destek Talebi Yönetimi"]
     end
 
-    Kullanici --o UGiris
-    Kullanici --o UKayit
-    Kullanici --o EListele
-    Kullanici --o ESatinAl
-    Kullanici --o Biletlerim
-    Kullanici --o Destek
+    Kullanici --> UGiris
+    Kullanici --> UKayit
+    Kullanici --> EListele
+    Kullanici --> ESatinAl
+    Kullanici --> Biletlerim
+    Kullanici --> Destek
 
-    Yonetici --o Yonetim
-    Yonetici --o BiletDogrula
-    Yonetici --o Destek
+    Yonetici --> Yonetim
+    Yonetici --> BiletDogrula
+    Yonetici --> Destek
 
-    EListele ..> ULoginNeeded["(Giriş Gerekli)"]
-    ESatinAl ..> ULoginNeeded
-    Biletlerim ..> ULoginNeeded
+    EListele -.-> ULoginNeeded
+    ESatinAl -.-> ULoginNeeded
+    Biletlerim -.-> ULoginNeeded
 ```
 
 #### 3.5.2. Use Case Senaryoları
@@ -454,7 +455,7 @@ graph TD
         node[Sunucu Donanımı]
         subgraph "Yazılım"
             OS[Linux OS]
-            WebServer[Web Server (Apache)]
+            WebServer["Web Server (Apache)"]
             PHP[PHP Runtime]
             Database[MySQL Server]
         end
@@ -483,14 +484,13 @@ Zengin resim, sistemin paydaşlarını ve aralarındaki karmaşık ilişkileri b
 graph TD
     K[Kullanıcı]
     Y[Yönetici]
-    
     S(Etkinlik Bilet Sistemi)
     
-    K -- "Kayıt Bilgileri, Giriş, Konum, Bilet Talebi" --> S
-    S -- "Etkinlik Listesi, Bilet, QR Kod, Onay Mesajları" --> K
+    K -- "Kayıt Bilgileri, Bilet Talebi" --> S
+    S -- "Etkinlik Listesi, Bilet, QR Kod" --> K
     
-    Y -- "Giriş, Etkinlik Bilgileri, Yönetim Komutları" --> S
-    S -- "Satış Raporları, Kullanıcı Listeleri, Bilet Doğrulama Sonuçları" --> Y
+    Y -- "Etkinlik Bilgileri, Yönetim" --> S
+    S -- "Raporlar, Doğrulama Sonuçları" --> Y
 ```
 
 ---
