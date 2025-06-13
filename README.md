@@ -4,7 +4,7 @@
 
 **PROJE ADI:** Web Tabanlı Etkinlik Bilet Sistemi
 
-**HAZIRLAYAN:** [Öğrenci Adı Soyadı]
+**HAZIRLAYAN:**Ahmet Akaslan
 
 **TARİH:** 13.06.2024
 
