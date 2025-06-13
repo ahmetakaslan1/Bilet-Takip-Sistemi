@@ -14,6 +14,8 @@
 
 [![Proje Tanıtım Videosu](https://i.ytimg.com/vi/jXh7HbaWvzc/hqdefault.jpg)](https://youtu.be/jXh7HbaWvzc)
 
+*<p align="center"><strong>Videoyu izlemek için yukarıdaki görsele tıklayınız.</strong></p>*
+
 ---
 
 ## 1. BÖLÜM – TANITIM
