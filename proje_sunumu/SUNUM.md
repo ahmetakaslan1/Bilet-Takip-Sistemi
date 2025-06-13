@@ -4,9 +4,11 @@
 
 **PROJE ADI:** Web Tabanlı Etkinlik Bilet Sistemi
 
-**HAZIRLAYAN:** [Öğrenci Adı Soyadı]
+**HAZIRLAYAN:** AHMET AKASLAN
 
-**TARİH:** 13.06.2024
+**TARİH:** 12.06.2025
+
+**CANLI DEMO:** [https://biletsistemi.ahmetakaslan.com/](https://biletsistemi.ahmetakaslan.com/)
 
 ---
 
@@ -125,6 +127,10 @@ Geliştirilen "Etkinlik Bilet Sistemi", mevcut sistemlerin eksikliklerine şu ç
 
 ```mermaid
 graph TD
+    Kullanici(Kullanıcı)
+    Yonetici(Yönetici)
+    ULoginNeeded("Giriş Gerekli")
+
     subgraph Etkinlik Bilet Sistemi
         UKayit["Kullanıcı Kaydı"]
         UGiris["Kullanıcı Girişi"]
@@ -136,23 +142,20 @@ graph TD
         Destek["Destek Talebi Yönetimi"]
     end
 
-    Kullanici --|> UGiris
-    Kullanici --|> UKayit
-    Kullanici --|> EListele
-    Kullanici --|> ESatinAl
-    Kullanici --|> Biletlerim
-    Kullanici --|> Destek
+    Kullanici --> UGiris
+    Kullanici --> UKayit
+    Kullanici --> EListele
+    Kullanici --> ESatinAl
+    Kullanici --> Biletlerim
+    Kullanici --> Destek
 
-    Yonetici --|> Yonetim
-    Yonetici --|> BiletDogrula
-    Yonetici --|> Destek
+    Yonetici --> Yonetim
+    Yonetici --> BiletDogrula
+    Yonetici --> Destek
 
-    actor Kullanici
-    actor Yonetici
-
-    EListele -- "extend" --> ULoginNeeded["(Giriş Gerekli)"]
-    ESatinAl -- "extend" --> ULoginNeeded
-    Biletlerim -- "extend" --> ULoginNeeded
+    EListele -.-> ULoginNeeded
+    ESatinAl -.-> ULoginNeeded
+    Biletlerim -.-> ULoginNeeded
 ```
 
 #### 3.5.2. Use Case Senaryoları
@@ -413,7 +416,7 @@ graph TD
     end
     
     subgraph "Sunucu Tarafı"
-        WebServer[Web Sunucusu (Apache/Nginx)]
+        WebServer["Web Sunucusu (Apache)"]
         PHP_Engine[PHP Motoru]
         MySQL_DB[(MySQL Veritabanı)]
         
@@ -422,7 +425,7 @@ graph TD
         
         subgraph "PHP Bileşenleri"
             CoreFiles["Çekirdek Dosyalar (config, functions)"]
-            Pages["Sayfa Scriptleri (index, event, ...)"]
+            Pages["Sayfa Scriptleri (index, event)"]
             Admin["Admin Modülü"]
             QRCodeLib["QR Kod Kütüphanesi"]
         end
@@ -452,7 +455,7 @@ graph TD
         node[Sunucu Donanımı]
         subgraph "Yazılım"
             OS[Linux OS]
-            WebServer[Web Server (Apache)]
+            WebServer["Web Server (Apache)"]
             PHP[PHP Runtime]
             Database[MySQL Server]
         end
@@ -479,20 +482,15 @@ Zengin resim, sistemin paydaşlarını ve aralarındaki karmaşık ilişkileri b
 #### Context Diagram (Bağlam Diyagramı - DFD Seviye 0)
 ```mermaid
 graph TD
-    subgraph "Dış Varlıklar"
-        K[Kullanıcı]
-        Y[Yönetici]
-    end
+    K[Kullanıcı]
+    Y[Yönetici]
+    S(Etkinlik Bilet Sistemi)
     
-    subgraph "Sistem"
-        S(Etkinlik Bilet Sistemi)
-    end
+    K -- "Kayıt Bilgileri, Bilet Talebi" --> S
+    S -- "Etkinlik Listesi, Bilet, QR Kod" --> K
     
-    K -- "Kayıt Bilgileri, Giriş, Konum, Bilet Talebi" --> S
-    S -- "Etkinlik Listesi, Bilet, QR Kod, Onay Mesajları" --> K
-    
-    Y -- "Giriş, Etkinlik Bilgileri, Yönetim Komutları" --> S
-    S -- "Satış Raporları, Kullanıcı Listeleri, Bilet Doğrulama Sonuçları" --> Y
+    Y -- "Etkinlik Bilgileri, Yönetim" --> S
+    S -- "Raporlar, Doğrulama Sonuçları" --> Y
 ```
 
 ---
