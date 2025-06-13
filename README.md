@@ -4,9 +4,11 @@
 
 **PROJE ADI:** Web Tabanlı Etkinlik Bilet Sistemi
 
-**HAZIRLAYAN:**Ahmet Akaslan
+**HAZIRLAYAN:** AHMET AKASLAN
 
 **TARİH:** 13.06.2024
+
+**CANLI DEMO:** [https://biletsistemi.ahmetakaslan.com/](https://biletsistemi.ahmetakaslan.com/)
 
 ---
 
