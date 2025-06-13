@@ -6,7 +6,7 @@
 
 **HAZIRLAYAN:** AHMET AKASLAN
 
-**TARİH:** 13.06.2024
+**TARİH:** 12.06.2025
 
 **CANLI DEMO:** [https://biletsistemi.ahmetakaslan.com/](https://biletsistemi.ahmetakaslan.com/)
 
