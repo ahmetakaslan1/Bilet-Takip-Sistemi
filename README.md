@@ -10,6 +10,10 @@
 
 **CANLI DEMO:** [https://biletsistemi.ahmetakaslan.com/](https://biletsistemi.ahmetakaslan.com/)
 
+**PROJE TANITIM VİDEOSU:**
+
+[![Proje Tanıtım Videosu](https://i.ytimg.com/vi/jXh7HbaWvzc/hqdefault.jpg)](https://youtu.be/jXh7HbaWvzc)
+
 ---
 
 ## 1. BÖLÜM – TANITIM
