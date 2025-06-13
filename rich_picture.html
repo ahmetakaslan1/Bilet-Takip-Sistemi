@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilet Sistemi - Rich Picture</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML2Canvas for screenshots -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .diagram-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        h1, h2 {
+            color: #3498db;
+        }
+        .rich-picture {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: block;
+        }
+        .diagram-canvas {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 100%;
+            max-width: 900px;
+            height: 600px;
+            position: relative;
+        }
+        .component {
+            position: absolute;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+        .connection {
+            position: absolute;
+            height: 2px;
+            background-color: #333;
+            transform-origin: 0 0;
+        }
+        .connection-label {
+            position: absolute;
+            background-color: white;
+            padding: 2px 5px;
+            font-size: 12px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+        .actor {
+            background-color: #ffeb3b;
+        }
+        .system {
+            background-color: #4caf50;
+            color: white;
+        }
+        .process {
+            background-color: #2196f3;
+            color: white;
+        }
+        .data {
+            background-color: #ff9800;
+        }
+        .concern {
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .legend {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border-radius: 3px;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+                background-color: white !important;
+            }
+            .container {
+                max-width: 100%;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            .diagram-container {
+                border: none;
+                margin-bottom: 20px;
+                padding: 5px;
+                width: 100%;
+            }
+            h1, h2 {
+                color: #000 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            .diagram-canvas {
+                border: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: auto;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            .component, .connection, .connection-label {
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 1cm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="p-4 mb-4 bg-white rounded shadow-sm">
+            <h1 class="text-center">Bilet Sistemi Projesi Rich Picture</h1>
+            
+            <div class="mb-4">
+                <h5>Proje Adı: Bilet Sistemi</h5>
+                <h5>Grup Üyesi: Ahmet Akaslan 200541036</h5>
+            </div>
+            
+            <div class="text-center mb-4 no-print">
+                <button class="btn btn-primary" onclick="window.print()">PDF olarak Yazdır/Kaydet</button>
+                <button id="create-png" class="btn btn-success ms-2">PNG Olarak İndir</button>
+            </div>
+        </div>
+
+        <!-- Rich Picture -->
+        <div class="diagram-container" id="rich-picture-diagram">
+            <h2 class="text-center">Rich Picture: Bilet Sistemi Projesi</h2>
+            
+            <div class="diagram-canvas" id="diagram-canvas">
+                <!-- Kullanıcılar -->
+                <div class="component actor" style="top: 50px; left: 50px; width: 100px;">
+                    Normal Kullanıcı
+                </div>
+                <div class="component actor" style="top: 50px; left: 700px; width: 100px;">
+                    Admin
+                </div>
+                
+                <!-- Sistem -->
+                <div class="component system" style="top: 250px; left: 350px; width: 150px; height: 80px;">
+                    Bilet Sistemi
+                </div>
+                
+                <!-- Süreçler -->
+                <div class="component process" style="top: 150px; left: 200px; width: 120px;">
+                    Etkinlik Arama
+                </div>
+                <div class="component process" style="top: 400px; left: 200px; width: 120px;">
+                    Bilet Satın Alma
+                </div>
+                <div class="component process" style="top: 150px; left: 520px; width: 120px;">
+                    Etkinlik Yönetimi
+                </div>
+                <div class="component process" style="top: 400px; left: 520px; width: 120px;">
+                    Kullanıcı Yönetimi
+                </div>
+                
+                <!-- Veri Bileşenleri -->
+                <div class="component data" style="top: 300px; left: 50px; width: 100px;">
+                    Konum Bilgisi
+                </div>
+                <div class="component data" style="top: 300px; left: 700px; width: 100px;">
+                    Veritabanı
+                </div>
+                
+                <!-- Problemler/Kaygılar -->
+                <div class="component concern" style="top: 450px; left: 700px;">
+                    Güvenlik
+                </div>
+                <div class="component concern" style="top: 50px; left: 350px;">
+                    Kapasite
+                </div>
+                
+                <!-- Bağlantılar -->
+                <!-- Normal Kullanıcı - Etkinlik Arama -->
+                <div class="connection" id="conn1"></div>
+                <div class="connection-label" style="top: 115px; left: 125px;">Etkinlikleri arar</div>
+                
+                <!-- Normal Kullanıcı - Bilet Satın Alma -->
+                <div class="connection" id="conn2"></div>
+                <div class="connection-label" style="top: 240px; left: 120px;">Bilet alır</div>
+                
+                <!-- Admin - Etkinlik Yönetimi -->
+                <div class="connection" id="conn3"></div>
+                <div class="connection-label" style="top: 115px; left: 625px;">Ekler/Düzenler</div>
+                
+                <!-- Admin - Kullanıcı Yönetimi -->
+                <div class="connection" id="conn4"></div>
+                <div class="connection-label" style="top: 240px; left: 635px;">Yönetir</div>
+                
+                <!-- Etkinlik Arama - Bilet Sistemi -->
+                <div class="connection" id="conn5"></div>
+                <div class="connection-label" style="top: 210px; left: 290px;">Sorgular</div>
+                
+                <!-- Bilet Satın Alma - Bilet Sistemi -->
+                <div class="connection" id="conn6"></div>
+                <div class="connection-label" style="top: 360px; left: 290px;">İşlem yapar</div>
+                
+                <!-- Etkinlik Yönetimi - Bilet Sistemi -->
+                <div class="connection" id="conn7"></div>
+                <div class="connection-label" style="top: 210px; left: 450px;">Günceller</div>
+                
+                <!-- Kullanıcı Yönetimi - Bilet Sistemi -->
+                <div class="connection" id="conn8"></div>
+                <div class="connection-label" style="top: 360px; left: 450px;">Günceller</div>
+                
+                <!-- Konum Bilgisi - Bilet Sistemi -->
+                <div class="connection" id="conn9"></div>
+                <div class="connection-label" style="top: 290px; left: 220px;">Kullanır</div>
+                
+                <!-- Bilet Sistemi - Veritabanı -->
+                <div class="connection" id="conn10"></div>
+                <div class="connection-label" style="top: 290px; left: 555px;">Veri kaydeder/okur</div>
+                
+                <!-- Kapasite - Bilet Sistemi -->
+                <div class="connection" id="conn11"></div>
+                <div class="connection-label" style="top: 150px; left: 385px;">Limitler</div>
+                
+                <!-- Güvenlik - Bilet Sistemi -->
+                <div class="connection" id="conn12"></div>
+                <div class="connection-label" style="top: 375px; left: 650px;">Koruma</div>
+            </div>
+            
+            <!-- Açıklama Bölümü -->
+            <div class="legend">
+                <h6>Açıklama:</h6>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #ffeb3b;"></span>
+                    <span>Aktör</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #4caf50;"></span>
+                    <span>Sistem</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #2196f3;"></span>
+                    <span>Süreç</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #ff9800;"></span>
+                    <span>Veri</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #f44336;"></span>
+                    <span>Problem/Kaygı</span>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <p><strong>Rich Picture Açıklaması:</strong></p>
+                <p>Bu rich picture, bilet sistemi projesinin ana bileşenlerini ve aralarındaki ilişkileri göstermektedir. Sistemde iki ana kullanıcı tipi vardır: normal kullanıcılar ve yöneticiler (admin). Normal kullanıcılar etkinlikleri arayabilir ve bilet satın alabilirken, yöneticiler etkinlikleri ve kullanıcıları yönetebilir.</p>
+                <p>Sistemin ana süreçleri etkinlik arama, bilet satın alma, etkinlik yönetimi ve kullanıcı yönetimidir. Sistem, konum bilgisini kullanarak kullanıcılara yakın etkinlikleri önerme yeteneğine sahiptir. Tüm veriler veritabanında saklanır ve işlenir.</p>
+                <p>Sistemin iki ana sorunu/kaygısı vardır: etkinliklerin kapasite sınırlamaları ve sistemin genel güvenliği. Sistem, bu kaygıları ele almak için çeşitli kontroller ve güvenlik mekanizmaları içerir.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Bağlantıları oluşturan fonksiyon
+        function drawConnections() {
+            function connect(id, x1, y1, x2, y2) {
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                const connection = document.getElementById(id);
+                connection.style.width = distance + 'px';
+                connection.style.left = x1 + 'px';
+                connection.style.top = y1 + 'px';
+                connection.style.transform = `rotate(${angle}deg)`;
+            }
+            
+            // Normal Kullanıcı - Etkinlik Arama
+            connect('conn1', 100, 80, 220, 160);
+            
+            // Normal Kullanıcı - Bilet Satın Alma
+            connect('conn2', 100, 80, 220, 410);
+            
+            // Admin - Etkinlik Yönetimi
+            connect('conn3', 750, 80, 580, 160);
+            
+            // Admin - Kullanıcı Yönetimi
+            connect('conn4', 750, 80, 580, 410);
+            
+            // Etkinlik Arama - Bilet Sistemi
+            connect('conn5', 260, 180, 350, 280);
+            
+            // Bilet Satın Alma - Bilet Sistemi
+            connect('conn6', 260, 410, 350, 310);
+            
+            // Etkinlik Yönetimi - Bilet Sistemi
+            connect('conn7', 520, 180, 450, 280);
+            
+            // Kullanıcı Yönetimi - Bilet Sistemi
+            connect('conn8', 520, 410, 450, 310);
+            
+            // Konum Bilgisi - Bilet Sistemi
+            connect('conn9', 150, 310, 350, 290);
+            
+            // Bilet Sistemi - Veritabanı
+            connect('conn10', 500, 290, 700, 310);
+            
+            // Kapasite - Bilet Sistemi
+            connect('conn11', 390, 90, 425, 250);
+            
+            // Güvenlik - Bilet Sistemi
+            connect('conn12', 700, 450, 500, 330);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bağlantıları çiz
+            drawConnections();
+            
+            // PNG olarak dışa aktarma
+            document.getElementById('create-png').addEventListener('click', function() {
+                const diagramContainer = document.getElementById('rich-picture-diagram');
+                
+                html2canvas(diagramContainer, {
+                    backgroundColor: "#ffffff",
+                    scale: 2,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = "Bilet_Sistemi_Rich_Picture.png";
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            });
+        });
+    </script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

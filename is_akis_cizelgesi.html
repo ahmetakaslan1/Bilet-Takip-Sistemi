@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilet Sistemi - İş Akış Çizelgesi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <!-- HTML2Canvas for screenshots -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .diagram-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        h1, h2 {
+            color: #3498db;
+        }
+        .table-container {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+        .workflow-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .workflow-table th, 
+        .workflow-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .workflow-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .workflow-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .workflow-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .status-complete {
+            background-color: #d4edda;
+        }
+        .status-in-progress {
+            background-color: #fff3cd;
+        }
+        .status-pending {
+            background-color: #f8d7da;
+        }
+        .legend {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border-radius: 3px;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+                background-color: white !important;
+            }
+            .container {
+                max-width: 100%;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            .diagram-container {
+                border: none;
+                margin-bottom: 20px;
+                padding: 5px;
+                width: 100%;
+            }
+            h1, h2 {
+                color: #000 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            .workflow-table th, 
+            .workflow-table td {
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            .status-complete, .status-in-progress, .status-pending {
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 1cm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="p-4 mb-4 bg-white rounded shadow-sm">
+            <h1 class="text-center">Bilet Sistemi Projesi İş Akış Çizelgesi</h1>
+            
+            <div class="mb-4">
+                <h5>Proje Adı: Bilet Sistemi</h5>
+                <h5>Grup Üyesi: Ahmet Akaslan 200541036</h5>
+            </div>
+            
+            <div class="text-center mb-4 no-print">
+                <button class="btn btn-primary" onclick="window.print()">PDF olarak Yazdır/Kaydet</button>
+                <button id="create-png" class="btn btn-success ms-2">PNG Olarak İndir</button>
+            </div>
+        </div>
+
+        <!-- İş Akış Diyagramı -->
+        <div class="diagram-container" id="workflow-diagram">
+            <h2 class="mb-4">1. Bilet Satın Alma Süreci İş Akış Diyagramı</h2>
+            <div class="mermaid">
+flowchart TD
+    A[Kullanıcı Girişi] --> B{Giriş Başarılı?}
+    B -->|Evet| C[Etkinlik Listesi Görüntüleme]
+    B -->|Hayır| A
+    C --> D[Etkinlik Seçimi]
+    D --> E[Etkinlik Detayı Görüntüleme]
+    E --> F{Kullanıcının \nBileti Var mı?}
+    F -->|Evet| G[Bilet Sayfasına Yönlendirme]
+    F -->|Hayır| H{Etkinlikte \nYer Var mı?}
+    H -->|Hayır| I[Tükendi Mesajı Gösterme]
+    H -->|Evet| J[Bilet Satın Alma Butonu]
+    J --> K[Ödeme Bilgileri]
+    K --> L[Ödeme İşlemi]
+    L --> M{Ödeme Başarılı?}
+    M -->|Hayır| K
+    M -->|Evet| N[Bilet Oluşturma]
+    N --> O[QR Kod Oluşturma]
+    O --> P[Bilet Bilgilerini Gösterme]
+            </div>
+            
+            <h2 class="mt-5 mb-4">2. Konum Tabanlı Etkinlik Önerisi İş Akış Diyagramı</h2>
+            <div class="mermaid">
+flowchart TD
+    A[Kullanıcı Ana Sayfada] --> B[Konum İzni Talebi]
+    B --> C{Konum İzni \nVerildi mi?}
+    C -->|Hayır| D[Standart Etkinlik Listesi Gösterme]
+    C -->|Evet| E[Konum Bilgisini Alma]
+    E --> F[Konum Bilgisini Sunucuya Gönderme]
+    F --> G[Veritabanında Konum Kaydetme]
+    G --> H[Yakındaki Etkinlikleri Sorgulama]
+    H --> I[Mesafe Hesaplama]
+    I --> J[Etkinlikleri Mesafeye Göre Sıralama]
+    J --> K[En Yakın Etkinlikleri Gösterme]
+            </div>
+        </div>
+        
+        <!-- İş Akış Çizelgesi Tablosu -->
+        <div class="diagram-container" id="workflow-table">
+            <h2 class="mb-4">Bilet Sistemi Projesi İş Akış Çizelgesi</h2>
+            
+            <div class="table-container">
+                <table class="workflow-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Görev</th>
+                            <th rowspan="2">Görevli</th>
+                            <th rowspan="2">Başlangıç Tarihi</th>
+                            <th rowspan="2">Bitiş Tarihi</th>
+                            <th colspan="5">İlerleme Durumu</th>
+                        </tr>
+                        <tr>
+                            <th>Tamamlandı</th>
+                            <th>Devam Ediyor</th>
+                            <th>Başlanmadı</th>
+                            <th>Öncelik</th>
+                            <th>Notlar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Analiz ve Tasarım -->
+                        <tr>
+                            <td><strong>Gereksinim Analizi</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>01.09.2023</td>
+                            <td>10.09.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Yüksek</td>
+                            <td>Kullanıcı hikayeleri ve gereksinimler belgelendi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Veritabanı Tasarımı</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>11.09.2023</td>
+                            <td>17.09.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Yüksek</td>
+                            <td>ER Diyagramı ve tablo yapıları oluşturuldu</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UML Diyagramları</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>18.09.2023</td>
+                            <td>22.09.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Orta</td>
+                            <td>Use Case, Sequence ve Class diyagramları hazırlandı</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kullanıcı Arayüzü Tasarımı</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>23.09.2023</td>
+                            <td>28.09.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Orta</td>
+                            <td>Responsive tasarım, Bootstrap ile gerçekleştirildi</td>
+                        </tr>
+                        
+                        <!-- Geliştirme -->
+                        <tr>
+                            <td><strong>Veritabanı Yapısı</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>29.09.2023</td>
+                            <td>02.10.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Yüksek</td>
+                            <td>MySQL veritabanı oluşturuldu</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kullanıcı Modülü</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>03.10.2023</td>
+                            <td>10.10.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Yüksek</td>
+                            <td>Kayıt, giriş ve kullanıcı profil yönetimi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Etkinlik Modülü</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>11.10.2023</td>
+                            <td>17.10.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Yüksek</td>
+                            <td>Etkinlik listeleme ve filtreleme</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bilet Modülü</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>18.10.2023</td>
+                            <td>24.10.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Yüksek</td>
+                            <td>Bilet oluşturma ve QR kod entegrasyonu</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Konum Hizmetleri</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>25.10.2023</td>
+                            <td>29.10.2023</td>
+                            <td class="status-complete">✓</td>
+                            <td></td>
+                            <td></td>
+                            <td>Orta</td>
+                            <td>Kullanıcı konumuna göre etkinlik önerme</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Admin Paneli</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>30.10.2023</td>
+                            <td>08.11.2023</td>
+                            <td></td>
+                            <td class="status-in-progress">✓</td>
+                            <td></td>
+                            <td>Orta</td>
+                            <td>Raporlama ve istatistikler ekleniyor</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Destek Talebi Modülü</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>09.11.2023</td>
+                            <td>13.11.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Düşük</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                        
+                        <!-- Test ve Tamamlama -->
+                        <tr>
+                            <td><strong>Birim Testleri</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>14.11.2023</td>
+                            <td>19.11.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Yüksek</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Entegrasyon Testleri</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>20.11.2023</td>
+                            <td>24.11.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Yüksek</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hata Düzeltme</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>25.11.2023</td>
+                            <td>01.12.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Yüksek</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performans Optimizasyonu</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>02.12.2023</td>
+                            <td>05.12.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Orta</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                        
+                        <!-- Belgelendirme ve Teslim -->
+                        <tr>
+                            <td><strong>Kullanıcı Dokümantasyonu</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>06.12.2023</td>
+                            <td>11.12.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Orta</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Teknik Dokümantasyon</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>12.12.2023</td>
+                            <td>16.12.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Orta</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Son Kontrol</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>17.12.2023</td>
+                            <td>19.12.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Yüksek</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Proje Teslimi</strong></td>
+                            <td>Ahmet Akaslan</td>
+                            <td>20.12.2023</td>
+                            <td>20.12.2023</td>
+                            <td></td>
+                            <td></td>
+                            <td class="status-pending">✓</td>
+                            <td>Kritik</td>
+                            <td>Henüz başlanmadı</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Açıklama Bölümü -->
+            <div class="legend mt-4">
+                <h6>Durum Açıklaması:</h6>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #d4edda;"></span>
+                    <span>Tamamlandı</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #fff3cd;"></span>
+                    <span>Devam Ediyor</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #f8d7da;"></span>
+                    <span>Başlanmadı</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mermaid JS ayarları
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: { 
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // PNG olarak dışa aktarma
+            document.getElementById('create-png').addEventListener('click', function() {
+                const diagramContainer = document.getElementById('workflow-diagram');
+                const tableContainer = document.getElementById('workflow-table');
+                
+                // İlk olarak diyagramları PNG olarak dışa aktar
+                html2canvas(diagramContainer, {
+                    backgroundColor: "#ffffff",
+                    scale: 2,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = "Bilet_Sistemi_Is_Akis_Diyagrami.png";
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    // Sonra tabloyu PNG olarak dışa aktar
+                    setTimeout(() => {
+                        html2canvas(tableContainer, {
+                            backgroundColor: "#ffffff",
+                            scale: 2,
+                            logging: false
+                        }).then(canvas => {
+                            const link = document.createElement('a');
+                            link.download = "Bilet_Sistemi_Is_Akis_Cizelgesi.png";
+                            link.href = canvas.toDataURL('image/png');
+                            link.click();
+                        });
+                    }, 1000);
+                });
+            });
+        });
+    </script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

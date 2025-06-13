@@ -1,0 +1,28 @@
+# PHP hatalarını göster
+php_flag display_errors on
+php_value error_reporting E_ALL
+
+# PHP hata günlüğü
+php_flag log_errors on
+php_value error_log error_log.txt
+
+# Muhtemel 500 hatalarını engelle
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Eğer istek admin klasörü için DEĞİLSE ve
+    RewriteCond %{REQUEST_URI} !^/admin/
+    # İstenen dosya fiziksel olarak yoksa ve
+    RewriteCond %{REQUEST_FILENAME} !-f
+    # İstenen dizin fiziksel olarak yoksa,
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # İsteği index.php'ye yönlendir.
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Maksimum çalıştırma süresi - 30 saniye
+php_value max_execution_time 30
+
+# Maksimum hafıza kullanımı - 128 MB
+php_value memory_limit 128M 
